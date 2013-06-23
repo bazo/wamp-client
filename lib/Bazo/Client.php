@@ -1,6 +1,6 @@
 <?php
 
-namespace ElephantIO;
+namespace Bazo;
 
 require_once(__DIR__.'/Payload.php');
 
@@ -11,7 +11,7 @@ require_once(__DIR__.'/Payload.php');
  *
  * @author Ludovic Barreca <ludovic@balloonup.com>
  */
-class Client {
+class RatchetClient {
     const TYPE_DISCONNECT   = 0;
     const TYPE_CONNECT      = 1;
     const TYPE_HEARTBEAT    = 2;
