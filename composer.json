@@ -1,7 +1,7 @@
 {
-    "name": "bazo/ratchet-client",
+    "name": "bazo/wamp-client",
     "type": "library",
-    "description": "Ratchet client in PHP",
+    "description": "WAMP client in PHP",
     "keywords": ["Ratchet", "WAMP", "WebSocket"],
     "license": "GPL",
     "authors": [
@@ -11,9 +11,9 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0"
+        "php": ">=5.3.0"
     },
     "autoload": {
-        "psr-0": { "Bazo": "lib/" }
+        "psr-0": { "WAMP": "src/" }
     }
 }
