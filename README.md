@@ -1,28 +1,50 @@
-# Elephant.io
-
-
-
-MIT Licenced - Copyright © 2012. Wisembly
+# WAMP Client
 
 ## About
 
-Elephant.io is a rough socket.io client written in PHP. Its goal is to ease communications between your PHP application and a socket.io server.
-Protocol version of socket.io currently supported is 1.
-Only websocket transport is available at the moment.
+This library has been tested with Ratchet WAMP server. It can only send messages to the server, listening for replies is not implemented.
+Supported functions:
+ - prefix
+ - call
+ - publish
+ - event
 
-## Licence
+## Usage
 
-This software is distributed under MIT Licence. See LICENCE for more info.
+```php
+$client = new \WAMP\WAMPClient('http://localhost:8080');
+$sessionId = $client->connect();
 
-## Contributors
+//establish a prefix on server
+$client->prefix("calc", "http://example.com/simple/calc#");
 
-Author:
-    Ludovic Barreca <ludogp2@gmail.com>
+//you can send arbitrary number of arguments
+$client->call('calc', 12,14,15);
 
-Mainteners:
-    Guillaume Potier <guillaume@wisembly.com>
-    Gabriel Majoulet <gabriel@wisembly.com>
+$data = [0, 1, 2];
 
-## Special Thanks
+//or array
+$client->call('calc', $data);
 
-Special thanks goes to Mark Karpeles who helped me a bit to understand the way websockets works.
+publish an event
+
+//$payload can be scalar or array
+$exclude = [$sessionId]; //no sense in sending the payload to ourselves
+$eligible = [...] //list of other clients ids that are eligible to receive this payload
+$client->publish('topic', $payload, $exclude, $eligible);
+
+$client->event('topic', $payload);
+
+```
+
+## License
+
+This software is distributed under MIT License. See LICENSE for more info.
+
+## Author
+
+Martin Bažík <martin@bazo.sk>
+
+## Thanks
+
+Thanks to Elephant.IO authors for the websocket communication part.

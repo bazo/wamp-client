@@ -53,7 +53,7 @@ class WAMPClient
 
 		$payload = json_decode($this->read());
 
-		if ($payload[0] != Protocol::MSG_WELCOME) {
+		if ($payload[0] != WAMPProtocol::MSG_WELCOME) {
 			throw new \RuntimeException('WAMP Server did not send welcome message.');
 		}
 
@@ -94,16 +94,15 @@ class WAMPClient
 	/**
 	 * Read the buffer and return the oldest event in stack
 	 *
-	 * @access public
+	 * @see https://tools.ietf.org/html/rfc6455#section-5.2
 	 * @return string
-	 * // https://tools.ietf.org/html/rfc6455#section-5.2
 	 */
-	public function read()
+	private function read()
 	{
 		// Ignore first byte
 		fread($this->fd, 1);
 
-		// There is also masking bit, as MSB, but it's 0 in current Socket.io
+		// There is also masking bit, as MSB, bit it's 0
 		$payloadLength = ord(fread($this->fd, 1));
 
 		switch ($payloadLength) {
@@ -116,9 +115,7 @@ class WAMPClient
 				break;
 		}
 
-		$payload = fread($this->fd, $payloadLength);
-
-		return $payload;
+		return fread($this->fd, $payloadLength);
 	}
 
 
@@ -131,7 +128,6 @@ class WAMPClient
 	{
 		if ($this->fd) {
 			fclose($this->fd);
-
 			return TRUE;
 		}
 
@@ -168,7 +164,7 @@ class WAMPClient
 	 */
 	public function prefix($prefix, $uri)
 	{
-		$type = Protocol::MSG_PREFIX;
+		$type = WAMPProtocol::MSG_PREFIX;
 		$data = [$type, $prefix, $uri];
 		$this->send($data);
 	}
@@ -184,7 +180,7 @@ class WAMPClient
 	{
 		$args = func_get_args();
 		array_shift($args);
-		$type = Protocol::MSG_CALL;
+		$type = WAMPProtocol::MSG_CALL;
 		$callId = uniqid("", $moreEntropy = TRUE);
 		$data = array_merge(array($type, $callId, $procUri), $args);
 
@@ -202,7 +198,7 @@ class WAMPClient
 	 */
 	public function publish($topicUri, $payload, $exclude = [], $eligible = [])
 	{
-		$type = Protocol::MSG_PUBLISH;
+		$type = WAMPProtocol::MSG_PUBLISH;
 		$data = array($type, $topicUri, $payload, $exclude, $eligible);
 		$this->send($data);
 	}
@@ -215,7 +211,7 @@ class WAMPClient
 	 */
 	public function event($topicUri, $payload)
 	{
-		$type = Protocol::MSG_EVENT;
+		$type = WAMPProtocol::MSG_EVENT;
 		$data = array($type, $topicUri, $payload);
 		$this->send($data);
 	}
