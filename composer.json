@@ -1,19 +1,19 @@
 {
-    "name": "bazo/wamp-client",
-    "type": "library",
-    "description": "WAMP client in PHP",
-    "keywords": ["Ratchet", "WAMP", "WebSocket"],
-    "license": "GPL",
-    "authors": [
-        {
-            "name": "Martin Bažík",
+	"name": "bazo/wamp-client",
+	"type": "library",
+	"description": "WAMP client in PHP",
+	"keywords": ["Ratchet", "WAMP", "WebSocket"],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Martin Bažík",
 			"email": "martin@bazo.sk"
-        }
-    ],
-    "require": {
-        "php": ">=5.3.0"
-    },
-    "autoload": {
-        "psr-0": { "WAMP": "src/" }
-    }
+		}
+	],
+	"require": {
+		"php": ">=5.3.0"
+	},
+	"autoload": {
+		"psr-0": {"WAMP": "src/"}
+	}
 }
