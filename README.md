@@ -34,7 +34,7 @@ $eligible = [...] //list of other clients ids that are eligible to receive this 
 $client->publish('topic', $payload, $exclude, $eligible);
 
 $client->event('topic', $payload);
-
+$client->disconnect();
 ```
 
 ## License

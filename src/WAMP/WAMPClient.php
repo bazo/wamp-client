@@ -36,8 +36,7 @@ class WAMPClient
 	/**
 	 * Connects using websocket protocol
 	 *
-	 * @access private
-	 * @return bool
+	 * @return string
 	 */
 	public function connect()
 	{
@@ -66,10 +65,10 @@ class WAMPClient
 		$key = $this->generateKey();
 
 		$out = "GET /websocket/ HTTP/1.1\r\n";
-		$out .= "Host: " . $this->serverHost . "\r\n";
+		$out .= "Host: {$this->serverHost} \r\n";
 		$out .= "Upgrade: WebSocket\r\n";
 		$out .= "Connection: Upgrade\r\n";
-		$out .= "Sec-WebSocket-Key: " . $key . "\r\n";
+		$out .= "Sec-WebSocket-Key: $key \r\n";
 		$out .= "Sec-WebSocket-Version: 13\r\n";
 		$out .= "Origin: *\r\n\r\n";
 
@@ -84,8 +83,9 @@ class WAMPClient
 		if ($response === FALSE) {
 			throw new \RuntimeException('WAMP Server did not respond properly');
 		}
-
-		if ($subres = substr($response, 0, 12) != 'HTTP/1.1 101') {
+		$subres = substr($response, 0, 12);
+		
+		if ($subres != 'HTTP/1.1 101') {
 			throw new \RuntimeException('Unexpected Response. Expected HTTP/1.1 101 got ' . $subres);
 		}
 	}
@@ -120,11 +120,11 @@ class WAMPClient
 
 
 	/**
-	 * Close the socket
+	 * Disconnect
 	 *
 	 * @return boolean
 	 */
-	public function close()
+	public function disconnect()
 	{
 		if ($this->fd) {
 			fclose($this->fd);
