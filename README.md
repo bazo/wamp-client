@@ -9,6 +9,8 @@ Supported functions:
  - publish
  - event
 
+Based on https://github.com/Wisembly/elephant.io
+
 ## Usage
 
 ```php

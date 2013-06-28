@@ -22,7 +22,10 @@ class WAMPClient
 	/** @var resource */
 	private $fd;
 
+	private $connected = FALSE;
 
+	private $sessionId = NULL;
+	
 	/**
 	 * @param type $endpoint The WAMP server endpoint
 	 */
@@ -40,6 +43,10 @@ class WAMPClient
 	 */
 	public function connect()
 	{
+		if($this->connected) {
+			return $this->sessionId;
+		}
+		
 		$this->fd = stream_socket_client($this->serverHost . ':' . $this->serverPort, $errno, $errstr);
 
 		if (!$this->fd) {
@@ -55,8 +62,9 @@ class WAMPClient
 		if ($payload[0] != WAMPProtocol::MSG_WELCOME) {
 			throw new \RuntimeException('WAMP Server did not send welcome message.');
 		}
-
-		return $payload[1];
+		
+		$this->sessionId = $payload[1];
+		return $this->sessionId;
 	}
 
 
