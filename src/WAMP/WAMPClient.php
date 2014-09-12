@@ -36,12 +36,12 @@ class WAMPClient
 	}
 
 
-	/**
-	 * Connects using websocket protocol
-	 *
-	 * @return string
-	 */
-	public function connect()
+    /**
+     * Connects using websocket protocol
+     * @param string $target Our Target on RemoteServer
+     * @return string
+     */
+    public function connect($target='/websocket/')
 	{
 		if($this->connected) {
 			return $this->sessionId;
@@ -53,7 +53,7 @@ class WAMPClient
 			throw new \RuntimeException('Could not open socket. Reason: ' . $errstr);
 		}
 
-		$response = $this->upgradeProtocol();
+        $response = $this->upgradeProtocol($target);
 
 		$this->verifyResponse($response);
 
@@ -68,12 +68,16 @@ class WAMPClient
 	}
 
 
-	private function upgradeProtocol()
+    private function upgradeProtocol($target)
 	{
 		$key = $this->generateKey();
 
-		$out = "GET /websocket/ HTTP/1.1\r\n";
-		$out .= "Host: {$this->serverHost} \r\n";
+        if(!strpos($target, '/')) {
+            throw new \RuntimeException('Wamp Server Target is wrong.');
+        }
+
+        $out = "GET ".$target." HTTP/1.1\r\n";
+        $out .= "Host: {$this->serverHost} \r\n";
 		$out .= "Upgrade: WebSocket\r\n";
 		$out .= "Connection: Upgrade\r\n";
 		$out .= "Sec-WebSocket-Key: $key \r\n";
