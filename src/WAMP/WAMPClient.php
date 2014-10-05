@@ -72,7 +72,7 @@ class WAMPClient
 	{
 		$key = $this->generateKey();
 
-        if(!strpos($target, '/')) {
+        if(false === strpos($target, '/') ) {
             throw new \RuntimeException('Wamp Server Target is wrong.');
         }
 
