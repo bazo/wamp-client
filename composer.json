@@ -1,12 +1,12 @@
 {
-	"name": "bazo/wamp-client",
+	"name": "loertel/wamp-client",
 	"type": "library",
 	"description": "WAMP client in PHP",
 	"keywords": ["Ratchet", "WAMP", "WebSocket"],
 	"license": "MIT",
 	"authors": [
 		{
-			"name": "Martin Bažík",
+			"name": "Martin Bažík (loertel fork)",
 			"email": "martin@bazo.sk"
 		}
 	],

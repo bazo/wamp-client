@@ -76,8 +76,10 @@ class WAMPClient
             throw new \RuntimeException('Wamp Server Target is wrong.');
         }
 
+
+        $host = str_replace('ssl://', '', $this->serverHost);
         $out = "GET ".$target." HTTP/1.1\r\n";
-        $out .= "Host: {$this->serverHost} \r\n";
+        $out .= "Host: {$host} \r\n";
 		$out .= "Upgrade: WebSocket\r\n";
 		$out .= "Connection: Upgrade\r\n";
 		$out .= "Sec-WebSocket-Key: $key \r\n";
